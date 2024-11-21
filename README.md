@@ -1,7 +1,7 @@
 <h1 align="center">XtrixUI</h1>
 
 <p align="center">
-XtrixUI: Your Modern Cross-Framework UI Library! 🚀 
+XtrixUI: Gorgeous, Modern, Utility-First Cross-Framework UI Library! 🚀 
 Empowering developers with fully customizable components, seamless integration with TailwindCSS, and a commitment to accessibility, responsiveness, and performance. Build stunning web applications with ease and flexibility!
 </p>
 
