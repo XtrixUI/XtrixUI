@@ -1,5 +1,5 @@
 import * as React from "react";
-import { LuChevronRight, LuMoreHorizontal } from "react-icons/lu";
+import { LuChevronRight, LuEllipsis } from "react-icons/lu";
 import { cfx } from "classifyx";
 
 const Breadcrumb = React.forwardRef<
@@ -101,7 +101,7 @@ const BreadcrumbEllipsis = ({
     )}
     {...props}
   >
-    <LuMoreHorizontal className="h-5 w-5" />
+    <LuEllipsis className="h-5 w-5" />
     <span className="sr-only">More</span>
   </span>
 );

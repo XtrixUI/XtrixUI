@@ -2,7 +2,6 @@ import * as React from "react";
 import { LuX } from "react-icons/lu";
 import { cfx } from "classifyx";
 
-// Create a Context for managing Sheet state
 interface SheetContextType {
   isOpen: boolean;
   open: () => void;

@@ -1,16 +1,18 @@
 import * as React from "react";
 import { cfx } from "classifyx";
 
-interface SwitchProps
-  extends Omit<React.ComponentPropsWithoutRef<"button">, "onChange"> {
-  checked?: boolean;
-  onToggle?: (checked: boolean) => void;
+interface SwitchProps {
   iconOn?: React.ReactNode;
   iconOff?: React.ReactNode;
   classNameSwitchActive?: string;
   classNameSwitch?: string;
   classNameBG?: string;
   classNameBGActive?: string;
+  className?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  role?: string;
+  ariaChecked?: boolean;
 }
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
@@ -21,20 +23,17 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
       classNameSwitchActive,
       classNameBG,
       classNameBGActive,
-      checked = false,
-      onToggle,
       iconOn,
       iconOff,
       ...props
     },
     ref,
   ) => {
-    const [isChecked, setIsChecked] = React.useState(checked);
+    // Internal state to manage the switch's "on" or "off" position
+    const [isChecked, setIsChecked] = React.useState(false);
 
     const handleToggle = () => {
-      const newState = !isChecked;
-      setIsChecked(newState);
-      onToggle?.(newState);
+      setIsChecked(!isChecked);
     };
 
     return (

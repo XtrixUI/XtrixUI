@@ -7,7 +7,7 @@ type CarouselProps = {
 };
 
 type CarouselContextProps = {
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   scrollPrev: () => void;
   scrollNext: () => void;
   canScrollPrev: boolean;

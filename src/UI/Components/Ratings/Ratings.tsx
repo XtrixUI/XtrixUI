@@ -1,13 +1,12 @@
+import * as React from "react";
 import { cfx } from "classifyx";
-import type { Dispatch, SetStateAction } from "react";
-import React from "react";
 import { LuStar as StarIcon } from "react-icons/lu";
 
 interface StarWrapperProps {
   value?: number;
-  setValue?: Dispatch<SetStateAction<number>>;
+  setValue?: React.Dispatch<React.SetStateAction<number>>;
   numStars?: number;
-  icon?: React.ComponentType<any>; // Updated to allow any icon component
+  icon?: React.ComponentType<any>;
   disabled?: boolean;
   wrapperProps?: React.HTMLAttributes<HTMLDivElement>;
   iconProps?: React.HTMLAttributes<SVGSVGElement>;

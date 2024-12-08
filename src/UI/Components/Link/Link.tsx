@@ -4,7 +4,7 @@ import { LuExternalLink } from "react-icons/lu";
 
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   variant?: "default" | "underline" | "external";
-  customAnchor?: React.ReactNode;
+  customAnchor?: React.ReactElement<any>;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   className?: string;
@@ -27,18 +27,19 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     const isExternal =
       variant === "external" || (href && href.startsWith("http"));
 
-    // Determine which icon to show based on the variant
     const Icon = isExternal && !icon ? <LuExternalLink /> : icon;
 
-    return customAnchor ? (
-      // Render custom anchor element if provided
-      React.cloneElement(customAnchor as React.ReactElement, {
-        ref,
+    if (customAnchor) {
+      return React.cloneElement(customAnchor, {
+        ...(customAnchor.props || {}),
+        ref: typeof customAnchor.type === "string" ? undefined : ref,
         className: cfx("inline-flex items-center", className),
         href,
         ...props,
-      })
-    ) : (
+      });
+    }
+
+    return (
       <a
         ref={ref}
         href={href}

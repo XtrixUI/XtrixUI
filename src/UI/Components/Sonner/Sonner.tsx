@@ -2,7 +2,6 @@ import * as React from "react";
 import { cfx } from "classifyx";
 import { LuX } from "react-icons/lu";
 
-// Define different Sonner types
 interface SonnerOptions {
   duration?: number;
   variant?: "default" | "success" | "error" | "warning";

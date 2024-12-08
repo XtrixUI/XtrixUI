@@ -2,7 +2,6 @@ import * as React from "react";
 import { cfx } from "classifyx";
 import { LuGripVertical } from "react-icons/lu";
 
-// Context for managing resizable panel state
 const ResizableContext = React.createContext<any>(null);
 
 const ResizableProvider = ({ children }: { children: React.ReactNode }) => {
@@ -11,7 +10,7 @@ const ResizableProvider = ({ children }: { children: React.ReactNode }) => {
   const updatePanelSize = (id: string, size: number) => {
     setPanels((prev) => ({
       ...prev,
-      [id]: Math.max(10, Math.min(100, size)), // Keep size between 10% and 100%
+      [id]: Math.max(10, Math.min(100, size)),
     }));
   };
 
@@ -22,7 +21,6 @@ const ResizableProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Resizable Panel Group
 const ResizablePanelGroup = ({
   className,
   direction = "horizontal",
@@ -47,7 +45,6 @@ const ResizablePanelGroup = ({
 };
 ResizablePanelGroup.displayName = "ResizablePanelGroup";
 
-// Resizable Panel
 const ResizablePanel = React.forwardRef<
   HTMLDivElement,
   {
@@ -81,7 +78,6 @@ const ResizablePanel = React.forwardRef<
 });
 ResizablePanel.displayName = "ResizablePanel";
 
-// Resizable Handle
 const ResizableHandle = ({
   direction = "horizontal",
   className,
@@ -147,7 +143,6 @@ const ResizableHandle = ({
 };
 ResizableHandle.displayName = "ResizableHandle";
 
-// Resizable Container
 const ResizableContainer = ({
   children,
   className,
@@ -166,8 +161,6 @@ const ResizableContainer = ({
   );
 };
 ResizableContainer.displayName = "ResizableContainer";
-
-// Export all components wrapped in the ResizableProvider
 
 export {
   ResizableContainer,

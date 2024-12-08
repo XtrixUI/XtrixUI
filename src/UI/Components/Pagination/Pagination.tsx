@@ -1,10 +1,6 @@
 import * as React from "react";
 import { cfx } from "classifyx";
-import {
-  LuChevronLeft,
-  LuChevronRight,
-  LuMoreHorizontal,
-} from "react-icons/lu";
+import { LuChevronLeft, LuChevronRight, LuEllipsis } from "react-icons/lu";
 
 // Pagination Wrapper
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
@@ -112,7 +108,7 @@ const PaginationEllipsis = ({
     )}
     {...props}
   >
-    <LuMoreHorizontal className="h-5 w-5" />
+    <LuEllipsis className="h-5 w-5" />
     <span className="sr-only">More pages</span>
   </span>
 );
