@@ -61,8 +61,8 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
       {...props}
     >
       {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child as React.ReactElement<any>, {
+        if (React.isValidElement<TabsTriggerProps>(child)) {
+          return React.cloneElement(child, {
             isActive: activeTab === child.props.value,
             onClick: () => onTabChange && onTabChange(child.props.value),
           });
@@ -80,6 +80,7 @@ interface TabsTriggerProps extends React.ComponentProps<"button"> {
   classNameActiveTab?: string;
   classNameOtherTab?: string;
   isActive?: boolean;
+  onClick?: () => void; // Add this to accept the onClick handler
 }
 
 const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
