@@ -67,6 +67,7 @@ export default defineConfig({
       User: ["./src/UI/Components/User/index.ts"],
       //Providers
       ThemeProvider: ["./src/UI/Providers/ThemeProvider/index.ts"],
+      XtrixUIProvider: ["./src/UI/Providers/XtrixUIProvider/index.ts"],
       //Configs
       TailwindConfig: ["./src/UI/Configs/TailwindConfig/index.ts"],
     },
