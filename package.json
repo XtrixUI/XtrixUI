@@ -247,6 +247,10 @@
       "types": "./dist/UI/Providers/ThemeProvider/ThemeProvider.d.ts",
       "import": "./dist/UI/Providers/ThemeProvider/ThemeProvider.js"
     },
+    "./XtrixUIProvider": {
+      "types": "./dist/UI/Providers/XtrixUIProvider/XtrixUIProvider.d.ts",
+      "import": "./dist/UI/Providers/XtrixUIProvider/XtrixUIProvider.js"
+    },
     "./TailwindConfig": {
       "types": "./dist/UI/Configs/TailwindConfig/TailwindConfig.d.ts",
       "import": "./dist/UI/Configs/TailwindConfig/TailwindConfig.js"
