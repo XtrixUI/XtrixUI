@@ -69,7 +69,7 @@ export default defineConfig({
       ThemeProvider: ["./src/UI/Providers/ThemeProvider/index.ts"],
       XtrixUIProvider: ["./src/UI/Providers/XtrixUIProvider/index.ts"],
       //Configs
-      TailwindConfig: ["./src/UI/Configs/TailwindConfig/index.ts"],
+      TailwindConfig: ["./src/UI/Configs/XtrixUITailwindConfig/index.ts"],
     },
   },
   lib: [

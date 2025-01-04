@@ -252,8 +252,8 @@
       "import": "./dist/UI/Providers/XtrixUIProvider/XtrixUIProvider.js"
     },
     "./TailwindConfig": {
-      "types": "./dist/UI/Configs/TailwindConfig/XtrixUITailwindConfig.d.ts",
-      "import": "./dist/UI/Configs/TailwindConfig/XtrixUITailwindConfig.js"
+      "types": "./dist/UI/Configs/XtrixUITailwindConfig/XtrixUITailwindConfig.d.ts",
+      "import": "./dist/UI/Configs/XtrixUITailwindConfig/XtrixUITailwindConfig.js"
     }
   },
   "main": "./dist/index.js",
