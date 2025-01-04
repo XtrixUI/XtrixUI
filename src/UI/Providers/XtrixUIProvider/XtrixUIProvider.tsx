@@ -2,13 +2,11 @@ import * as React from "react";
 
 interface XtrixUIProviderProps {
   children: React.ReactNode;
-  version?: string;
 }
 
-export function XtrixUIProvider({
-  children,
-  version = "1.1.9",
-}: XtrixUIProviderProps) {
+export function XtrixUIProvider({ children }: XtrixUIProviderProps) {
+  const version = "1.2.1";
+
   React.useEffect(() => {
     // Add attributes to the <html> tag
     const root = document.documentElement;
