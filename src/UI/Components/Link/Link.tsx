@@ -25,15 +25,25 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     ref,
   ) => {
     const isExternal =
-      variant === "external" || (href && href.startsWith("http"));
-
+      variant === "external" || (href && /^https?:\/\//.test(href));
     const Icon = isExternal && !icon ? <LuExternalLink /> : icon;
 
+    // Base styles
+    const baseStyles = "inline-flex items-center gap-1 transition-colors";
+
+    // Variant styles
+    const variantStyles = {
+      default: "text-primary hover:text-primary-700",
+      underline: "text-primary hover:underline",
+      external: "text-primary hover:text-primary-700",
+    };
+
+    // Handle custom anchor rendering
     if (customAnchor) {
       return React.cloneElement(customAnchor, {
         ...(customAnchor.props || {}),
         ref: typeof customAnchor.type === "string" ? undefined : ref,
-        className: cfx("inline-flex items-center", className),
+        className: cfx(baseStyles, className),
         href,
         ...props,
       });
@@ -43,14 +53,9 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       <a
         ref={ref}
         href={href}
-        className={cfx(
-          "text-primary-600 inline-flex items-center gap-1 transition-colors",
-          {
-            "hover:underline": variant === "underline",
-            "hover:text-primary-700": variant === "default",
-          },
-          className,
-        )}
+        className={cfx(baseStyles, variantStyles[variant], className)}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
         {...props}
       >
         {iconPosition === "left" && Icon && (
