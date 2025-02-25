@@ -2,25 +2,23 @@ import * as React from "react";
 import { cfx } from "classifyx";
 
 const cardVariants = {
-  variant: {
-    default: "border ",
-    shadow: "shadow-2xl bg-white text-black",
-    outline: "border-2 border-gray-300",
-    flat: "border-none shadow-xl",
-  },
+  default: "border",
+  shadow: "shadow-2xl bg-white text-black",
+  outline: "border-2 border-gray-300",
+  flat: "border-none shadow-xl",
+};
 
-  shadowLevel: {
-    low: "shadow-sm",
-    medium: "shadow-md",
-    high: "shadow-lg",
-    ultra: "shadow-xl",
-  },
+const shadowLevels = {
+  low: "shadow-sm",
+  medium: "shadow-md",
+  high: "shadow-lg",
+  ultra: "shadow-xl",
 };
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-    variant?: " default" | "shadow" | "outline" | "flat";
+    variant?: "default" | "shadow" | "outline" | "flat";
     shadowLevel?: "low" | "medium" | "high" | "ultra";
   }
 >(({ className, variant = "default", shadowLevel = "low", ...props }, ref) => (
@@ -28,9 +26,9 @@ const Card = React.forwardRef<
     ref={ref}
     className={cfx(
       "rounded-2xl bg-white dark:border-[#ffffff33] dark:bg-[#202020] dark:text-white",
-      { variants: cardVariants },
-      { variant, shadowLevel },
-      className,
+      cardVariants[variant], // Apply variant
+      shadowLevels[shadowLevel], // Apply shadow level
+      className, // Allow additional styles
     )}
     {...props}
   />
