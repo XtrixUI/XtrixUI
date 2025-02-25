@@ -26,7 +26,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const ButtonComp = asChild ? "span" : "button"; // Use span if asChild is true, otherwise use button
+    const Component = asChild ? "span" : "button"; // Use span if asChild is true, otherwise use button
 
     // Base styles
     const baseStyles =
@@ -46,12 +46,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Size styles
     const sizeStyles = {
-      default: "h-10 px-3 py",
-      sm: "h-8 rounded-md px-4 py-2",
-      md: "h-10 rounded-md px-6 py-3",
-      lg: "h-12 rounded-md px-6 py-4",
-      xl: "h-14 rounded-md px-8 py-5",
-      icon: "h-10 w-10",
+      default: "h-10 px-4 py-2",
+      sm: "h-8 px-3 py-1.5 text-sm",
+      md: "h-10 px-5 py-2",
+      lg: "h-12 px-6 py-3 text-lg",
+      xl: "h-14 px-8 py-4 text-xl",
+      icon: "h-10 w-10 p-2",
     };
 
     // Construct the final class name
@@ -59,10 +59,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       baseStyles,
       variantStyles[variant],
       sizeStyles[size],
-      className, // Allow users to add their own styles
+      className,
     );
 
-    return <ButtonComp className={buttonClass} ref={ref} {...props} />;
+    return <Component ref={ref} className={buttonClass} {...props} />;
   },
 );
 Button.displayName = "Button";
