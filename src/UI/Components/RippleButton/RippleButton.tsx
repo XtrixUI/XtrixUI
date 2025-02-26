@@ -1,0 +1,105 @@
+import React, { type MouseEvent, useEffect, useState } from "react";
+import { cfx } from "classifyx";
+
+interface RippleButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  rippleColor?: string;
+  duration?: string;
+}
+
+export const RippleButton = React.forwardRef<
+  HTMLButtonElement,
+  RippleButtonProps
+>(
+  (
+    {
+      className,
+      children,
+      rippleColor = "#ffffff",
+      duration = "600ms",
+      onClick,
+      ...props
+    },
+    ref,
+  ) => {
+    const [buttonRipples, setButtonRipples] = useState<
+      Array<{ x: number; y: number; size: number; key: number }>
+    >([]);
+
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+      createRipple(event);
+      onClick?.(event);
+    };
+
+    const createRipple = (event: MouseEvent<HTMLButtonElement>) => {
+      const button = event.currentTarget;
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = event.clientX - rect.left - size / 2;
+      const y = event.clientY - rect.top - size / 2;
+
+      const newRipple = { x, y, size, key: Date.now() };
+      setButtonRipples((prevRipples) => [...prevRipples, newRipple]);
+    };
+
+    useEffect(() => {
+      if (buttonRipples.length > 0) {
+        const lastRipple = buttonRipples[buttonRipples.length - 1];
+        const timeout = setTimeout(() => {
+          setButtonRipples((prevRipples) =>
+            prevRipples.filter((ripple) => ripple.key !== lastRipple.key),
+          );
+        }, Number.parseInt(duration));
+        return () => clearTimeout(timeout);
+      }
+    }, [buttonRipples, duration]);
+
+    return (
+      <button
+        className={cfx(
+          "relative flex cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 bg-background px-4 py-2 text-center text-primary",
+          className,
+        )}
+        onClick={handleClick}
+        ref={ref}
+        {...props}
+      >
+        <div className="relative z-10">{children}</div>
+        <span className="pointer-events-none absolute inset-0">
+          {buttonRipples.map((ripple) => (
+            <span
+              key={ripple.key}
+              style={{
+                position: "absolute",
+                width: `${ripple.size}px`,
+                height: `${ripple.size}px`,
+                top: `${ripple.y}px`,
+                left: `${ripple.x}px`,
+                backgroundColor: rippleColor,
+                borderRadius: "9999px",
+                opacity: 0.3,
+                animation: `rippling ${duration} ease-out`,
+              }}
+            />
+          ))}
+        </span>
+
+        {/* Inline styles for ripple animation */}
+        <style>{`
+          @keyframes rippling {
+            0% {
+              transform: scale(0);
+              opacity: 1;
+            }
+            100% {
+              transform: scale(2);
+              opacity: 0;
+            }
+          }
+        `}</style>
+      </button>
+    );
+  },
+);
+
+RippleButton.displayName = "RippleButton";

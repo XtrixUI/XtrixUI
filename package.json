@@ -163,6 +163,10 @@
       "types": "./dist/UI/Components/ReviewCard/ReviewCard.d.ts",
       "import": "./dist/UI/Components/ReviewCard/ReviewCard.js"
     },
+    "./RippleButton": {
+      "types": "./dist/UI/Components/RippleButton/RippleButton.d.ts",
+      "import": "./dist/UI/Components/RippleButton/RippleButton.js"
+    },
     "./ScrollArea": {
       "types": "./dist/UI/Components/ScrollArea/ScrollArea.d.ts",
       "import": "./dist/UI/Components/ScrollArea/ScrollArea.js"

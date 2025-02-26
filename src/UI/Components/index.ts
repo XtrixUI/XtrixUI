@@ -37,6 +37,7 @@ export * from "./RainbowButton";
 export * from "./Ratings";
 export * from "./Resizable";
 export * from "./ReviewCard";
+export * from "./RippleButton";
 export * from "./ScrollArea";
 export * from "./Select";
 export * from "./Separator";
