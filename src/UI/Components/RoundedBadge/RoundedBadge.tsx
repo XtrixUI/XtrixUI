@@ -18,20 +18,41 @@ interface RoundedBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   rounded?: boolean;
 }
 
-// Helper function for variant classes
-const getVariantClasses = (
-  variant: RoundedBadgeVariants,
-  color: RoundedBadgeColors,
-) => {
-  const base = {
-    solid: `bg-${color}-500 text-white`,
-    outline: `border border-${color}-500 text-${color}-500`,
-    ghost: `bg-${color}-100 text-${color}-500`,
-  };
-  return base[variant];
+// Define color classes explicitly to avoid Tailwind issues
+const colorClasses: Record<
+  RoundedBadgeColors,
+  { bg: string; text: string; border: string }
+> = {
+  primary: { bg: "bg-blue-500", text: "text-white", border: "border-blue-500" },
+  secondary: {
+    bg: "bg-gray-500",
+    text: "text-white",
+    border: "border-gray-500",
+  },
+  success: {
+    bg: "bg-green-500",
+    text: "text-white",
+    border: "border-green-500",
+  },
+  warning: {
+    bg: "bg-yellow-500",
+    text: "text-black",
+    border: "border-yellow-500",
+  },
+  error: { bg: "bg-red-500", text: "text-white", border: "border-red-500" },
 };
 
-// RoundedBadge component definition
+// Variant classes using predefined colorClasses
+const variantClasses = {
+  solid: (color: RoundedBadgeColors) =>
+    `${colorClasses[color].bg} ${colorClasses[color].text}`,
+  outline: (color: RoundedBadgeColors) =>
+    `border ${colorClasses[color].border} ${colorClasses[color].text}`,
+  ghost: (color: RoundedBadgeColors) =>
+    `bg-opacity-10 ${colorClasses[color].bg} ${colorClasses[color].text}`,
+};
+
+// RoundedBadge component
 const RoundedBadge = React.forwardRef<HTMLSpanElement, RoundedBadgeProps>(
   (
     {
@@ -54,8 +75,8 @@ const RoundedBadge = React.forwardRef<HTMLSpanElement, RoundedBadgeProps>(
           size === "sm" && "px-2 py-0.5 text-xs",
           size === "md" && "px-2.5 py-1 text-sm",
           size === "lg" && "px-3 py-1.5 text-base",
-          getVariantClasses(variant, color),
-          className,
+          variantClasses[variant](color), // Apply correct variant styles
+          className, // Allow additional styles
         )}
         {...props}
       >
@@ -64,6 +85,7 @@ const RoundedBadge = React.forwardRef<HTMLSpanElement, RoundedBadgeProps>(
     );
   },
 );
+
 RoundedBadge.displayName = "RoundedBadge";
 
 export { RoundedBadge };
