@@ -32,7 +32,7 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
     const isHorizontal = orientation === "horizontal";
     const orientationClasses = isHorizontal
       ? "w-full h-0 border-t"
-      : "h-full w-0 border-l";
+      : "h-full w-0 border-l rotate-90";
 
     return (
       <div
