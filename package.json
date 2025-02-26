@@ -163,10 +163,6 @@
       "types": "./dist/UI/Components/ReviewCard/ReviewCard.d.ts",
       "import": "./dist/UI/Components/ReviewCard/ReviewCard.js"
     },
-    "./RoundedBadge": {
-      "types": "./dist/UI/Components/RoundedBadge/RoundedBadge.d.ts",
-      "import": "./dist/UI/Components/RoundedBadge/RoundedBadge.js"
-    },
     "./ScrollArea": {
       "types": "./dist/UI/Components/ScrollArea/ScrollArea.d.ts",
       "import": "./dist/UI/Components/ScrollArea/ScrollArea.js"

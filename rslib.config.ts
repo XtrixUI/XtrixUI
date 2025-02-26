@@ -45,7 +45,6 @@ export default defineConfig({
       Ratings: ["./src/UI/Components/Ratings/index.ts"],
       Resizable: ["./src/UI/Components/Resizable/index.ts"],
       ReviewCard: ["./src/UI/Components/ReviewCard/index.ts"],
-      RoundedBadge: ["./src/UI/Components/RoundedBadge/index.ts"],
       ScrollArea: ["./src/UI/Components/ScrollArea/index.ts"],
       Select: ["./src/UI/Components/Select/index.ts"],
       Separator: ["./src/UI/Components/Separator/index.ts"],

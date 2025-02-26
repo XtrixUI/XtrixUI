@@ -1,33 +1,86 @@
 import * as React from "react";
 import { cfx } from "classifyx";
 
-// Badge Component
-const Badge = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
-    variant?: "default" | "secondary" | "destructive" | "outline";
-  }
->(({ className, variant = "default", ...props }, ref) => {
-  // Base styles
-  const baseStyles =
-    "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
+// Define variants, colors, and sizes for the Badge
+type BadgeVariants = "solid" | "outline" | "ghost";
+type BadgeColors = "primary" | "secondary" | "success" | "warning" | "error";
+type BadgeSizes = "sm" | "md" | "lg";
 
-  // Variant styles (structured similar to Alert)
-  const variantStyles = {
-    default:
-      "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-    secondary:
-      "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-    destructive:
-      "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-    outline: "text-foreground border border-border",
-  };
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  variant?: BadgeVariants;
+  color?: BadgeColors;
+  size?: BadgeSizes;
+  rounded?: boolean;
+}
 
-  // Construct the final class name
-  const badgeClass = cfx(baseStyles, variantStyles[variant], className);
+// Define color classes explicitly to avoid Tailwind issues
+const colorClasses: Record<
+  BadgeColors,
+  { bg: string; text: string; border: string }
+> = {
+  primary: { bg: "bg-blue-500", text: "text-white", border: "border-blue-500" },
+  secondary: {
+    bg: "bg-gray-500",
+    text: "text-white",
+    border: "border-gray-500",
+  },
+  success: {
+    bg: "bg-green-500",
+    text: "text-white",
+    border: "border-green-500",
+  },
+  warning: {
+    bg: "bg-yellow-500",
+    text: "text-black",
+    border: "border-yellow-500",
+  },
+  error: { bg: "bg-red-500", text: "text-white", border: "border-red-500" },
+};
 
-  return <div ref={ref} className={badgeClass} {...props} />;
-});
+// Variant classes using predefined colorClasses
+const variantClasses = {
+  solid: (color: BadgeColors) =>
+    `${colorClasses[color].bg} ${colorClasses[color].text}`,
+  outline: (color: BadgeColors) =>
+    `border ${colorClasses[color].border} ${colorClasses[color].text}`,
+  ghost: (color: BadgeColors) =>
+    `bg-opacity-10 ${colorClasses[color].bg} ${colorClasses[color].text}`,
+};
+
+// Badge component
+const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+  (
+    {
+      variant = "solid",
+      color = "primary",
+      size = "md",
+      rounded = false,
+      className,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <span
+        ref={ref}
+        className={cfx(
+          "inline-flex items-center font-medium",
+          rounded ? "rounded-full" : "rounded-md",
+          size === "sm" && "px-2 py-0.5 text-xs",
+          size === "md" && "px-2.5 py-1 text-sm",
+          size === "lg" && "px-3 py-1.5 text-base",
+          variantClasses[variant](color), // Apply correct variant styles
+          className, // Allow additional styles
+        )}
+        {...props}
+      >
+        {children}
+      </span>
+    );
+  },
+);
+
 Badge.displayName = "Badge";
 
 export { Badge };
