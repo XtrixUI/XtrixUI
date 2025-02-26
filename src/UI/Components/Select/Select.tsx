@@ -2,7 +2,49 @@ import * as React from "react";
 import { cfx } from "classifyx";
 import { LuCheck, LuChevronDown, LuChevronUp } from "react-icons/lu";
 
-// Select Trigger (Button to open/close the dropdown)
+// Select Context for managing state
+type SelectContextProps = {
+  selectedValue: string | null;
+  selectValue: (value: string) => void;
+  isOpen: boolean;
+  toggleOpen: () => void;
+};
+
+const SelectContext = React.createContext<SelectContextProps | undefined>(
+  undefined,
+);
+
+const useSelectContext = () => {
+  const context = React.useContext(SelectContext);
+  if (!context) {
+    throw new Error("useSelectContext must be used within a SelectProvider");
+  }
+  return context;
+};
+
+// SelectProvider Component (Handles state)
+const Select = ({ children }: React.ComponentProps<"div">) => {
+  const [selectedValue, setSelectedValue] = React.useState<string | null>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const toggleOpen = () => setIsOpen((prev) => !prev);
+  const selectValue = (value: string) => {
+    setSelectedValue(value);
+    setIsOpen(false); // Close on selection
+  };
+
+  return (
+    <SelectContext.Provider
+      value={{ selectedValue, selectValue, isOpen, toggleOpen }}
+    >
+      <div className="relative">{children}</div>
+    </SelectContext.Provider>
+  );
+};
+
+Select.displayName = "Select";
+
+// SelectTrigger (Button to open/close dropdown)
 const SelectTrigger = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<"button">
@@ -30,19 +72,20 @@ const SelectTrigger = React.forwardRef<
 });
 SelectTrigger.displayName = "SelectTrigger";
 
-// Select Value (Displays selected value or placeholder)
+// SelectValue (Displays selected value or placeholder)
 const SelectValue = ({ placeholder }: { placeholder?: string }) => {
   const { selectedValue } = useSelectContext();
-  return <span className="">{selectedValue || placeholder}</span>;
+  return <span>{selectedValue || placeholder}</span>;
 };
 SelectValue.displayName = "SelectValue";
 
-// Select Content (Dropdown list)
+// SelectContent (Dropdown list)
 const SelectContent = React.forwardRef<
   HTMLUListElement,
   React.ComponentProps<"ul">
 >(({ className, children, ...props }, ref) => {
   const { isOpen } = useSelectContext();
+
   return isOpen ? (
     <ul
       ref={ref}
@@ -50,6 +93,7 @@ const SelectContent = React.forwardRef<
         "absolute z-50 mt-1 max-h-60 w-[10rem] overflow-auto rounded-2xl border bg-white shadow-sm dark:border-[#ffffff33] dark:bg-[#202020]",
         className,
       )}
+      onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
       {...props}
     >
       {children}
@@ -58,7 +102,7 @@ const SelectContent = React.forwardRef<
 });
 SelectContent.displayName = "SelectContent";
 
-// Select Item (Individual option)
+// SelectItem (Individual option)
 const SelectItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li"> & { value: string }
@@ -71,7 +115,7 @@ const SelectItem = React.forwardRef<
       ref={ref}
       className={cfx(
         "relative flex cursor-pointer select-none items-center rounded-xl py-1.5 pl-8 text-sm outline-none hover:bg-gray-200 dark:hover:bg-black",
-        isSelected && " ",
+        isSelected && "bg-gray-300 dark:bg-gray-700", // Fixed selection styling
         className,
       )}
       onClick={() => selectValue(value)}
@@ -88,7 +132,7 @@ const SelectItem = React.forwardRef<
 });
 SelectItem.displayName = "SelectItem";
 
-// Select Label (Group label for options)
+// SelectLabel (Group label for options)
 const SelectLabel = React.forwardRef<
   HTMLLabelElement,
   React.ComponentProps<"label">
@@ -101,56 +145,13 @@ const SelectLabel = React.forwardRef<
 ));
 SelectLabel.displayName = "SelectLabel";
 
-// Select Group (Group of items)
+// SelectGroup (Group of items)
 const SelectGroup = ({ children, className }: React.ComponentProps<"div">) => (
   <div className={cfx("pt-1", className)}>{children}</div>
 );
 SelectGroup.displayName = "SelectGroup";
 
-// Select Context for managing state and value
-type SelectContextProps = {
-  selectedValue: string | null;
-  selectValue: (value: string) => void;
-  isOpen: boolean;
-  toggleOpen: () => void;
-};
-
-const SelectContext = React.createContext<SelectContextProps | undefined>(
-  undefined,
-);
-
-const useSelectContext = () => {
-  const context = React.useContext<SelectContextProps | undefined>(
-    SelectContext,
-  );
-  if (!context) {
-    throw new Error("useSelectContext must be used within a SelectProvider");
-  }
-  return context;
-};
-
-// SelectProvider Component (Handles the state for Select)
-const Select = ({ children }: React.ComponentProps<"div">) => {
-  const [selectedValue, setSelectedValue] = React.useState<string | null>(null);
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  const toggleOpen = () => setIsOpen(!isOpen);
-  const selectValue = (value: string) => {
-    setSelectedValue(value);
-    setIsOpen(false); // Close on selection
-  };
-
-  return (
-    <SelectContext.Provider
-      value={{ selectedValue, selectValue, isOpen, toggleOpen }}
-    >
-      {children}
-    </SelectContext.Provider>
-  );
-};
-
-Select.displayName = "Select";
-
+// Export components
 export {
   Select,
   SelectTrigger,
