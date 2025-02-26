@@ -9,6 +9,13 @@ interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
   color?: string;
 }
 
+// Variant classes (solid, dashed, dotted)
+const variantClasses = {
+  solid: "border-solid",
+  dashed: "border-dashed",
+  dotted: "border-dotted",
+};
+
 const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
   (
     {
@@ -17,15 +24,15 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
       decorative = true,
       variant = "solid",
       thickness = "1px",
-      color = "border", // Default to Tailwind's border color, customizable by users
+      color = "border", // Default to Tailwind's border color, customizable
       ...props
     },
     ref,
   ) => {
-    const orientationClasses =
-      orientation === "horizontal"
-        ? "w-full h-0 border-t"
-        : "h-full w-0 border-l rotate-90";
+    const isHorizontal = orientation === "horizontal";
+    const orientationClasses = isHorizontal
+      ? "w-full h-0 border-t"
+      : "h-full w-0 border-l";
 
     return (
       <div
@@ -34,13 +41,13 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
         aria-orientation={decorative ? undefined : orientation}
         className={cfx(
           "shrink-0",
-          orientationClasses, // Handles border direction based on orientation
-          variantClasses[variant], // Variant classes (solid, dashed, dotted)
+          orientationClasses,
+          variantClasses[variant], // Apply variant styles
           className,
         )}
         style={{
           borderWidth: thickness,
-          borderColor: color, // Users can pass custom color here
+          borderColor: color, // Supports Tailwind & custom colors
         }}
         {...props}
       />
@@ -49,12 +56,5 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
 );
 
 Separator.displayName = "Separator";
-
-// Classes for different variants
-const variantClasses = {
-  solid: "border-solid",
-  dashed: "border-dashed",
-  dotted: "border-dotted",
-};
 
 export { Separator };
