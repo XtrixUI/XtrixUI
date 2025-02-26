@@ -13,7 +13,7 @@ interface StarWrapperProps {
   showcase?: boolean;
 }
 
-function StarRating({
+function Rating({
   numStars = 5,
   icon,
   setValue,
@@ -58,4 +58,4 @@ function StarRating({
   );
 }
 
-export { StarRating };
+export { Rating };
