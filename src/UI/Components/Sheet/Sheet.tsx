@@ -18,7 +18,7 @@ const useSheet = () => {
   return context;
 };
 
-// SheetProvider Component to manage state
+// 🟢 SheetProvider manages state
 const SheetProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -34,13 +34,13 @@ const SheetProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// Sheet Root Component (Visibility controlled by the provider)
+// 🟢 Root Sheet component (Controls visibility)
 const Sheet: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isOpen } = useSheet();
   return isOpen ? <div className="fixed inset-0 z-50">{children}</div> : null;
 };
 
-// Sheet Trigger Component (to open the Sheet)
+// 🟢 Sheet Trigger (Opens the sheet)
 const SheetTrigger: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   children,
   className,
@@ -58,7 +58,7 @@ const SheetTrigger: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   );
 };
 
-// Sheet Close Component (to close the Sheet)
+// 🟢 Sheet Close (Closes the sheet)
 const SheetClose: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   className,
   ...props
@@ -68,7 +68,7 @@ const SheetClose: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
     <button
       onClick={close}
       className={cfx(
-        "absolute right-4 top-4 rounded-lg border p-1 hover:bg-gray-100",
+        "absolute right-4 top-4 rounded-lg border p-1 hover:bg-gray-100 dark:hover:bg-gray-800",
         className,
       )}
       {...props}
@@ -79,32 +79,38 @@ const SheetClose: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   );
 };
 
-// Sheet Overlay Component
+// 🟢 Sheet Overlay (Closes when clicked)
 const SheetOverlay = React.forwardRef<
   HTMLDivElement,
   { className?: string; children?: React.ReactNode }
->(({ className, children }, ref) => (
-  <div
-    ref={ref}
-    className={cfx(
-      "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm",
-      className,
-    )}
-  >
-    {children}
-  </div>
-));
+>(({ className, children }, ref) => {
+  const { close } = useSheet();
+
+  return (
+    <div
+      ref={ref}
+      className={cfx(
+        "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity",
+        className,
+      )}
+      onClick={close} // Close when clicking the overlay
+    >
+      {children}
+    </div>
+  );
+});
 SheetOverlay.displayName = "SheetOverlay";
-// Variants for the sheet sides (top, bottom, left, right)
+
+// 🟢 Sheet Variants (Improved animations)
 const sheetVariants = {
-  top: "inset-x-0 top-0 border-b ",
-  bottom: "inset-x-0 bottom-0 border-t ",
-  left: "inset-y-0 left-0 h-full w-3/4 border-r  sm:max-w-sm",
-  right: "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+  top: "inset-x-0 top-0 border-b translate-y-[-100%] animate-slideInDown",
+  bottom: "inset-x-0 bottom-0 border-t translate-y-[100%] animate-slideInUp",
+  left: "inset-y-0 left-0 h-full w-3/4 border-r translate-x-[-100%] sm:max-w-sm animate-slideInLeft",
+  right:
+    "inset-y-0 right-0 h-full w-3/4 border-l translate-x-[100%] sm:max-w-sm animate-slideInRight",
 };
 
-// Sheet Content Component with side variants
-
+// 🟢 Sheet Content (Improved animations & accessibility)
 const SheetContent = React.forwardRef<
   HTMLDivElement,
   {
@@ -112,23 +118,30 @@ const SheetContent = React.forwardRef<
     className?: string;
     children?: React.ReactNode;
   }
->(({ variant = "right", className, children, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cfx(
-      "fixed z-50 gap-4 p-6 backdrop-blur-lg",
-      sheetVariants[variant],
-      className,
-    )}
-    {...props}
-  >
-    {children}
-    <SheetClose />
-  </div>
-));
+>(({ variant = "right", className, children, ...props }, ref) => {
+  const { isOpen } = useSheet();
+
+  return (
+    <div
+      ref={ref}
+      role="dialog"
+      aria-modal="true"
+      className={cfx(
+        "fixed z-50 p-6 bg-white shadow-lg dark:bg-[#1a1a1a] rounded-lg transition-transform duration-300",
+        sheetVariants[variant],
+        isOpen ? "translate-x-0 translate-y-0" : "",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+      <SheetClose />
+    </div>
+  );
+});
 SheetContent.displayName = "SheetContent";
 
-// Sheet Header Component
+// 🟢 Sheet Header
 const SheetHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
   ...props
@@ -142,7 +155,7 @@ const SheetHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   />
 );
 
-// Sheet Footer Component
+// 🟢 Sheet Footer
 const SheetFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
   ...props
@@ -156,17 +169,17 @@ const SheetFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   />
 );
 
-// Sheet Title Component
+// 🟢 Sheet Title
 const SheetTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   className,
   ...props
 }) => <h2 className={cfx("text-lg font-semibold", className)} {...props} />;
 
-// Sheet Description Component
+// 🟢 Sheet Description
 const SheetDescription: React.FC<
   React.HTMLAttributes<HTMLParagraphElement>
 > = ({ className, ...props }) => (
-  <p className={cfx("text-muted-foreground text-sm", className)} {...props} />
+  <p className={cfx("text-sm text-muted-foreground", className)} {...props} />
 );
 
 export {
