@@ -3,51 +3,47 @@ import { cfx } from "classifyx";
 
 interface SpotlightHoverProps {
   children: React.ReactNode;
+  size?: number; // Spotlight size
+  color?: string; // Spotlight color
 }
 
 const SpotlightHover = React.forwardRef<HTMLDivElement, SpotlightHoverProps>(
-  ({ children }, ref) => {
-    const divRef = ref || React.useRef<HTMLDivElement>(null);
+  ({ children, size = 600, color = "rgba(255, 182, 255, 0.15)" }, ref) => {
+    const divRef = React.useRef<HTMLDivElement>(null);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const [opacity, setOpacity] = React.useState(0);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (
-        !divRef ||
-        !(divRef as React.MutableRefObject<HTMLDivElement>).current
-      )
-        return;
-
-      const rect = (
-        divRef as React.MutableRefObject<HTMLDivElement>
-      ).current.getBoundingClientRect();
-      setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    };
-
-    const handleMouseEnter = () => setOpacity(1);
-    const handleMouseLeave = () => setOpacity(0);
+    // Throttle mouse movement updates to improve performance
+    const handleMouseMove = React.useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!divRef.current) return;
+        const rect = divRef.current.getBoundingClientRect();
+        setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+      },
+      [],
+    );
 
     return (
       <div
-        ref={divRef as React.RefObject<HTMLDivElement>}
+        ref={ref || divRef}
         onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => setOpacity(1)}
+        onMouseLeave={() => setOpacity(0)}
         className={cfx(
           "relative size-full overflow-hidden rounded-xl",
           "flex items-center justify-center",
         )}
       >
-        {/* Spotlight Effect Overlay */}
+        {/* Spotlight Effect */}
         <div
           className="pointer-events-none absolute inset-0 transition-opacity duration-300"
           style={{
             opacity,
-            background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255, 182, 255, .15), transparent 40%)`,
+            background: `radial-gradient(${size}px circle at ${position.x}px ${position.y}px, ${color}, transparent 40%)`,
           }}
         />
 
-        {/* Children Content */}
+        {/* Content */}
         <div className="relative z-10">{children}</div>
       </div>
     );
