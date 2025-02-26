@@ -21,7 +21,7 @@ export function Meteors({ number = 20 }: MeteorsProps) {
   }, [number]);
 
   return (
-    <>
+    <div className="rotate-180">
       {meteorStyles.map((style, idx) => (
         // Meteor Head
         <span
@@ -55,6 +55,6 @@ export function Meteors({ number = 20 }: MeteorsProps) {
           animation: meteor 5s linear infinite;
         }
       `}</style>
-    </>
+    </div>
   );
 }
