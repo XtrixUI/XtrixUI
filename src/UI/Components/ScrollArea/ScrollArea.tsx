@@ -14,7 +14,7 @@ const ScrollArea = React.forwardRef<
     )}
     {...props}
   >
-    <div className="relative h-full w-full">{children}</div>
+    <div className="relative w-full">{children}</div>
   </div>
 ));
 ScrollArea.displayName = "ScrollArea";
@@ -31,8 +31,8 @@ const ScrollBar = React.forwardRef<
     className={cfx(
       "absolute rounded-full opacity-50 transition-opacity duration-150 hover:opacity-100",
       orientation === "vertical"
-        ? "right-0 top-0 h-full w-2"
-        : "bottom-0 left-0 h-2 w-full",
+        ? "right-1 top-0 h-full w-2"
+        : "bottom-1 left-0 h-2 w-full",
       className,
     )}
     {...props}
@@ -54,13 +54,13 @@ const ScrollOverlay = React.forwardRef<
     className={cfx(
       "pointer-events-none absolute transition-opacity",
       position === "left" &&
-        "inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-[#121212]",
+        "inset-y-0 left-0 w-1/4 bg-gradient-to-r from-white dark:from-[#121212]",
       position === "right" &&
-        "inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-[#121212]",
+        "inset-y-0 right-0 w-1/4 bg-gradient-to-l from-white dark:from-[#121212]",
       position === "top" &&
-        "inset-x-0 top-0 h-1/3 bg-gradient-to-b from-white dark:from-[#121212]",
+        "inset-x-0 top-0 h-1/4 bg-gradient-to-b from-white dark:from-[#121212]",
       position === "bottom" &&
-        "inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white dark:from-[#121212]",
+        "inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white dark:from-[#121212]",
     )}
     {...props}
   />
